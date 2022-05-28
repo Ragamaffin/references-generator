@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('reference_resource', function (Blueprint $table) {
             $table->foreignId('reference_id')->references('reference_id')->on('references')->onDelete('cascade');
             $table->foreignId('resource_id')->references('resource_id')->on('resources')->onDelete('cascade');
+            $table->integer('order_number')->nullable();
+            $table->string('pages')->nullable();
         });
     }
 

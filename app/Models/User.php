@@ -12,6 +12,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public const ROLE_ADMIN = 'a';
+    public const ROLE_USER = 'u';
+
     protected $primaryKey = 'user_id';
     /**
      * The attributes that are mass assignable.
@@ -25,7 +28,7 @@ class User extends Authenticatable
         'last_name',
         'first_name',
         'patronymic',
-        'role_id',
+        'role',
     ];
 
     /**
@@ -46,4 +49,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getFullName()
+    {
+        return $this->last_name.' '.$this->first_name.' '.$this->patronymic;
+    }
 }

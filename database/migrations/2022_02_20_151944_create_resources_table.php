@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id('resource_id');
             $table->string('resource_name');
             $table->string('resource_type', 20);
-            $table->longText('description');
-            $table->smallInteger('year');
-            $table->string('pages', 16);
-            $table->string('resource_url');
+            $table->longText('description')->nullable();
+            $table->smallInteger('year')->nullable();
+            $table->longText('resource_url')->nullable();
+            $table->string('file_path')->nullable();
             $table->foreignId('created_by')->nullable()->references('user_id')->on('users')->onDelete('set null');
             $table->timestamps();
         });

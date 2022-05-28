@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('first_name');
             $table->string('patronymic');
-            $table->string('role_id', 32);
+            $table->string('role', 1);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

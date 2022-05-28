@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id('reference_id');
             $table->string('reference_name');
             $table->foreignId('created_by')->nullable()->references('user_id')->on('users')->onDelete('set null');
-            $table->string('status', 1);
+            $table->string('status', 1)->default(\App\Models\Reference::STATUS_OPEN);
             $table->timestamps();
         });
     }
