@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->last_name.' '.$this->first_name.' '.$this->patronymic;
     }
+
+    public function references()
+    {
+        return $this->hasMany(Reference::class, 'created_by', 'user_id');
+    }
 }

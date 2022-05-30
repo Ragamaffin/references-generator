@@ -29,6 +29,8 @@ class StoreResourceRequest extends FormRequest
             'resource_name' => 'required|max:255',
             'resource_type' => 'required',
             'year' => 'numeric|nullable',
+            'tags' => 'nullable',
+            'authors' => 'nullable',
             'resource_url' => 'required_if:resource_type,==,'.Resource::RESOURCE_TYPE_URL.'|nullable|url',
             'file_input' => 'required_if:resource_type,==,'.Resource::RESOURCE_TYPE_FILE.'|nullable|file|mimes:doc,docx,pdf,zip',
         ];

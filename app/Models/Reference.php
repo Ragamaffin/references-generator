@@ -44,4 +44,9 @@ class Reference extends Model
             'reference_id',
             'tag_id');
     }
+
+    public static function getReferencesCreatedByCurrentUser()
+    {
+        return Auth()->user()->references->where('status', Reference::STATUS_OPEN);
+    }
 }

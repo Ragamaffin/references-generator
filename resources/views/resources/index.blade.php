@@ -5,13 +5,16 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header container-fluid">
                         {{ __('Resources') }}
-                        <a href="{{ route('resources.create') }}" class="btn btn-primary offset-lg-8 offset-xl-9">{{ __('Create new resource') }}</a>
+                        <a href="{{ route('resources.create') }}" class="btn btn-primary float-end mx-2">{{ __('Create new resource') }}</a>
+                        <a href="#" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#ModalCreateTag">{{ __('Create new tag') }}</a>
                     </div>
                     <div class="card-body">
-                        <form method="get" action="{{ route('resources.search') }}" class="col-3 mb-2" role="search">
-                            @include('layouts.filter_form')
+                        <form method="get" action="{{ route('resources.search') }}" class="col-12 mb-3 container-fluid" role="search">
+                            <div class="row">
+                                @include('layouts.filter_form')
+                            </div>
                         </form>
 
                         <table class="table table-striped resource-table">
@@ -47,4 +50,5 @@
             </div>
         </div>
     </div>
+    @include('modals.create_tag')
 @endsection

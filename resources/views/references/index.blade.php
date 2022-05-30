@@ -7,12 +7,14 @@
                 <div class="card">
                     <div class="card-header">
                         {{ __('References') }}
-                        <a href="{{ route('references.create') }}" class="btn btn-primary offset-sm-5 offset-lg-6 offset-xl-8">{{ __('Create new reference') }}</a>
+                        <a href="{{ route('references.create') }}" class="btn btn-primary float-end">{{ __('Create new reference') }}</a>
                     </div>
 
                     <div class="card-body">
-                        <form method="get" action="{{ route('references.search') }}" class="col-3 mb-2" role="search">
-                            @include('layouts.filter_form')
+                        <form method="get" action="{{ route('references.search') }}" class="col-12 mb-3 container-fluid" role="search">
+                            <div class="row">
+                                @include('layouts.filter_form')
+                            </div>
                         </form>
 
                         <table class="table table-striped">

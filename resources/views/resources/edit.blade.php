@@ -61,6 +61,21 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label for="tags" class="col-md-4 col-form-label text-md-end">{{ __('Tags') }}</label>
+                                <div class="col-md-6">
+                                    <select class="form-control tags-select" name="tags[]" multiple>
+                                    @foreach ($tags as $tag)
+                                            @if (is_array($selectedTags) && in_array($tag->tag_id, $selectedTags))
+                                                <option value="{{ $tag->tag_id}}" selected>{{ $tag->tag_name }}</option>
+                                            @else
+                                                <option value="{{ $tag->tag_id}}">{{ $tag->tag_name }}</option>
+                                            @endif
+                                    @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="row mb-3" id="resource_url" {{ $resource->hideField(\App\Models\Resource::RESOURCE_TYPE_URL) }}>
                                 <label for="resource_url" class="col-md-4 col-form-label text-md-end">{{ __('Resource URL') }}</label>
 

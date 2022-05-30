@@ -37,9 +37,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/references/edit/{reference}', [\App\Http\Controllers\ReferenceController::class, 'edit'])->name('references.edit');
     Route::post('/references/edit/{reference}', [\App\Http\Controllers\ReferenceController::class, 'update'])->name('references.update');
     Route::get('/references/generate/{reference}', [\App\Http\Controllers\ReferenceController::class, 'generate'])->name('references.generate');
+    Route::post('/references/addResource/{resource}', [\App\Http\Controllers\ReferenceController::class, 'addResourceToReference'])->name('references.addResource');
     Route::get('/references/remove/{reference}/{resource}', [\App\Http\Controllers\ReferenceController::class, 'removeResource'])->name('references.removeResource');
 
 // Routes for tags
-
+    Route::post('/tags/create', [\App\Http\Controllers\TagController::class, 'store'])->name('tags.store');
 });
 

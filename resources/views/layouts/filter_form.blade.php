@@ -16,6 +16,6 @@
     </select>
 </div>
 
-<button type="submit" class="btn btn-primary">
+<button type="submit" class="btn btn-sm btn-primary col-1">
     {{ __('Search') }}
 </button>

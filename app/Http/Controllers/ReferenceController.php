@@ -7,15 +7,13 @@ use App\Models\Reference;
 use App\Models\Resource;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
-use MongoDB\Driver\Session;
 
 class ReferenceController extends Controller
 {
     public function index()
     {
         $references = Reference::orderBy('reference_id', 'desc')->paginate(20);
-        $tags = Tag::query()->get();
+        $tags = Tag::all();
 
         return view('references.index', compact(['references', 'tags']));
     }
@@ -70,7 +68,7 @@ class ReferenceController extends Controller
             });
         }
         $references = $query->orderBy('reference_name')->paginate(10);
-        $tags = Tag::query()->get();
+        $tags = Tag::all();
 
         return view('references.index', compact(['references', 'tags', 'selectedTags']));
     }
@@ -78,9 +76,22 @@ class ReferenceController extends Controller
     public function removeResource(Reference $reference, Resource $resource)
     {
         if ($reference->resources()->detach($resource->resource_id)) {
-            return Redirect::back()->with('message', sprintf(__("Resource %s removed from current reference"), $resource->resource_name));
+            return redirect()->back()->with('message', sprintf(__("Resource %s successfully removed from current reference"), $resource->resource_name));
         }
 
-        return Redirect::back()->with('error', sprintf(__("This reference does not have resource %s"), $resource->resource_name));
+        return redirect()->back()->with('error', sprintf(__("This reference does not have resource %s"), $resource->resource_name));
+    }
+
+    public function addResourceToReference(Request $request, Resource $resource)
+    {
+//        $reference = new Reference::find(1);
+//        $reference->resources()->attach($resource->resource_id);
+//        try {
+//
+//            $reference->resources()->attach($resource->resource_id);
+//            return redirect()->back()->with('message', sprintf(__("Resource %s successfully added to reference %s"), $resource->resource_name, $reference->reference_name));
+//        } catch (Exception $e) {
+//
+//        }
     }
 }

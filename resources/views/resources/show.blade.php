@@ -8,7 +8,8 @@
                     <div class="card-header">
                         {{ __('Resource details') }}
                         @if (\App\Models\Helper::isCreatedByUser($resource) || \App\Models\Helper::isAdmin())
-                            <a href="{{ route('resources.edit', [$resource]) }}" class="btn btn-warning offset-8">{{ __('Edit') }}</a>
+                            <a href="{{ route('resources.edit', [$resource]) }}" class="btn btn-warning float-end mx-2">{{ __('Edit') }}</a>
+                            <a href="#" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#ModalAddToReference">{{ __('Add to reference') }}</a>
                         @endif
                     </div>
                     <div class="card-body">
@@ -23,22 +24,15 @@
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-3"> <h6 class="mb-0">{{ __('Description') }}</h6> </div>
-                            <div class="col-9">{{ $resource->description }}</div>
-                        </div>
-                        <hr>
-                        <div class="row">
                             <div class="col-3"> <h6 class="mb-0">{{ __('Year') }}</h6> </div>
                             <div class="col-9">{{ $resource->year }}</div>
                         </div>
                         <hr>
-                        @if ($resource->pages)
-                            <div class="row">
-                                <div class="col-3"> <h6 class="mb-0">{{ __('Pages') }}</h6> </div>
-                                <div class="col-9">{{ $resource->pages }}</div>
-                            </div>
-                            <hr>
-                        @endif
+                        <div class="row">
+                            <div class="col-3"> <h6 class="mb-0">{{ __('Tags') }}</h6> </div>
+                            <div class="col-9">{{\App\Models\Helper::getRelatedTagsToString($resource) }}</div>
+                        </div>
+                        <hr>
                         @if ($resource->resource_url)
                             <div class="row">
                                 <div class="col-3"> <h6 class="mb-0">{{ __('Resource URL') }}</h6> </div>
@@ -62,4 +56,5 @@
             </div>
         </div>
     </div>
+    @include('modals.add_resource_to_reference')
 @endsection

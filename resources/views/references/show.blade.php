@@ -28,7 +28,6 @@
                             </thead>
                             <tbody>
                             @foreach($reference->resources as $resource)
-                            @foreach($reference->resources as $resource)
                                 <tr>
                                     <td>{{ $resource->resource_name }}</td>
                                     <td>

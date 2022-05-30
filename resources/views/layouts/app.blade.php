@@ -173,6 +173,11 @@
         @endif
     </script>
 
+    <script>
+        window.onresize = function(event) {
+            $('.tags-select').select2();
+        }
+    </script>
     @yield('scripts')
 </body>
 </html>
