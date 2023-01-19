@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Helpers\Helper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,5 +49,18 @@ class Reference extends Model
     public static function getReferencesCreatedByCurrentUser()
     {
         return Auth()->user()->references->where('status', Reference::STATUS_OPEN);
+    }
+
+    public function getRelatedTagsToString()
+    {
+        $tags = [];
+
+        foreach ($this->resources as $resource) {
+            $tags = array_merge($tags, $resource->getRelatedTagsToString(Helper::TAGS_ARRAY));
+        }
+
+        $tags = array_unique($tags);
+
+        return implode(', ', $tags);
     }
 }

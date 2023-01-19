@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Http\Helpers\Helper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use PHPUnit\TextUI\Help;
 
 class Resource extends Model
 {
@@ -53,5 +55,18 @@ class Resource extends Model
         }
 
         return false;
+    }
+
+    public function getRelatedTagsToString($type = Helper::TAGS_STRING)
+    {
+        $tags = [];
+
+        foreach ($this->tags as $tag) {
+            $tags[] = $tag->tag_name;
+        }
+
+        return $type === Helper::TAGS_STRING
+            ? implode(', ', $tags)
+            : $tags;
     }
 }

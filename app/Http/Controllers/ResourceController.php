@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\Helper;
 use App\Http\Requests\Resource\StoreResourceRequest;
 use App\Models\Reference;
 use App\Models\Resource;
@@ -46,13 +47,10 @@ class ResourceController extends Controller
 
             $resource->file_path = $randomName;
         }
+
         $resource->save();
 
-        if ($request->tags) {
-            foreach ($request->tags as $tag) {
-                $resource->tags()->attach($tag);
-            }
-        }
+        Helper::setTags($resource, $request);
 
         return redirect()->route('resources.show', $resource)->with('message', __('Resource successfully created'));
     }
@@ -66,8 +64,9 @@ class ResourceController extends Controller
 
 
     public function edit(Resource $resource){
-        $selectedTags = $resource->tags->pluck('tag_id');
+        $selectedTags = $resource->tags->pluck('tag_id')->toArray();
         $tags = Tag::all();
+
         return view('resources.edit', compact(['resource', 'tags', 'selectedTags']));
     }
 
@@ -80,6 +79,7 @@ class ResourceController extends Controller
         $resource->year = $request->input('year');
         $resource->resource_url = $request->input('resource_url');
 
+        Helper::setTags($resource, $request);
 
         return redirect()->route('resources.show', $resource)->with('message', __('Resource successfully updated'));
     }
@@ -96,14 +96,16 @@ class ResourceController extends Controller
         $resourceName = $request->input('search_name');
         $selectedTags = $request->tags;
         $query = Resource::query();
+
         if ($resourceName) {
-            $query->where('resource_name', 'LIKE', "$resourceName%");
+            $query->where('resource_name', 'LIKE', "%$resourceName%");
         }
         if ($selectedTags) {
             $query->whereHas('tags', function($query) use($selectedTags) {
                 $query->whereIn('tags.tag_id', $selectedTags);
             });
         }
+
         $resources = $query->orderBy('resource_name')->paginate(10);
         $tags = Tag::all();
 

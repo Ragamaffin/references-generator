@@ -10,13 +10,13 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-3"> <h6 class="mb-0">{{ __('Reference name') }}</h6> </div>
+                            <div class="col-3"><h6 class="mb-0">{{ __('Reference name') }}</h6></div>
                             <div class="col-9">{{ $reference->reference_name }}</div>
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-3"> <h6 class="mb-0">{{ __('Tags') }}</h6> </div>
-                            <div class="col-9">{{ \App\Models\Helper::getRelatedTagsToString($reference) }}</div>
+                            <div class="col-3"><h6 class="mb-0">{{ __('Tags') }}</h6></div>
+                            <div class="col-9">{{ $reference->getRelatedTagsToString() }}</div>
                         </div>
                         <hr>
                         <table class="table table-striped">
@@ -31,8 +31,11 @@
                                 <tr>
                                     <td>{{ $resource->resource_name }}</td>
                                     <td>
-                                        <a href="{{ route('resources.show', $resource) }}" class="btn btn-sm btn-secondary">{{ __('Details') }}</a>
-                                        <a href="{{ route('references.removeResource', [$reference, $resource]) }}" class="btn btn-sm btn-danger delete-confirm" onclick="confirm({{ __('Are you sure you want to remove this resource from reference?') }})">
+                                        <a href="{{ route('resources.show', $resource) }}"
+                                           class="btn btn-sm btn-secondary">{{ __('Details') }}</a>
+                                        <a href="{{ route('references.removeResource', [$reference, $resource]) }}"
+                                           class="btn btn-sm btn-danger delete-confirm"
+                                           onclick="confirm({{ __('Are you sure you want to remove this resource from reference?') }})">
                                             {{ __('Remove') }}
                                         </a>
                                     </td>
@@ -56,7 +59,7 @@
                 title: '{{ __('Are you sure you want to remove this resource from reference?') }}',
                 icon: 'warning',
                 buttons: ["{{ __('Cancel') }}", "{{ __('Remove') }}"],
-            }).then(function(value) {
+            }).then(function (value) {
                 if (value) {
                     window.location.href = url;
                 }

@@ -1,4 +1,4 @@
-<form action="#" method="post" enctype="multipart/form-data">
+<form action="{{ route('references.addResource', $resource) }}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="modal fade text-left" id="ModalAddToReference" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -14,7 +14,7 @@
                         <label for="opened_references" class="col-md-4 col-form-label text-md-end">{{ __('References') }}</label>
 
                         <div class="col-md-6">
-                            <select class="form-control references-select" name="references">
+                            <select class="form-control references-select" name="reference">
                                 @foreach ($references as $reference)
                                     <option value="{{ $reference->reference_id}}">{{ $reference->reference_name }}</option>
                                 @endforeach

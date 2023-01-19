@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\Helper;
 use App\Http\Requests\Reference\StoreReferenceRequest;
 use App\Models\Reference;
 use App\Models\Resource;
@@ -28,8 +29,11 @@ class ReferenceController extends Controller
         $reference = new Reference();
 
         $reference->reference_name = $request->input('reference_name');
+        $reference->created_by = Auth()->user()->user_id;
 
         $reference->save();
+
+        Helper::setTags($reference, $request);
 
         return redirect()->route('references.show', $reference)->with('message', __('Reference successfully created. Please fill it using resources.'));
     }
@@ -41,7 +45,10 @@ class ReferenceController extends Controller
 
     public function edit(Reference $reference)
     {
-        //
+        $selectedTags = $reference->tags->pluck('tag_id');
+        $tags = Tag::all();
+
+        return view('references.edit', compact(['reference', 'tags', 'selectedTags']));
     }
 
     public function update(Request $request, Reference $reference)
@@ -84,14 +91,15 @@ class ReferenceController extends Controller
 
     public function addResourceToReference(Request $request, Resource $resource)
     {
-//        $reference = new Reference::find(1);
-//        $reference->resources()->attach($resource->resource_id);
-//        try {
-//
-//            $reference->resources()->attach($resource->resource_id);
-//            return redirect()->back()->with('message', sprintf(__("Resource %s successfully added to reference %s"), $resource->resource_name, $reference->reference_name));
-//        } catch (Exception $e) {
-//
-//        }
+        $reference = (new Reference)->find($request->reference);
+        $relatedResource = $reference->resources()->where('resources.resource_id', $resource->resource_id)->first();
+
+        if (!$relatedResource) {
+            $reference->resources()->attach($resource->resource_id);
+
+            return redirect()->back()->with('message', sprintf(__("Resource %s successfully attached to reference %s"), $resource->resource_name, $reference->reference_name));
+        }
+
+        return redirect()->back()->with('error', sprintf(__("Resource %s already attached to reference %s"), $resource->resource_name, $reference->reference_name));
     }
 }
