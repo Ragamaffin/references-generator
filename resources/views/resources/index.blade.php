@@ -35,12 +35,12 @@
                                 <tr>
                                     <td>{{ $resource->resource_name }}</td>
                                     <td>{{ $resource->getTypeName() }}</td>
-                                    <td>{{ $resource->getRelatedTagsToString() }}</td>
+                                    <td>{{ Helper::getRelatedTagsToString($resource) }}</td>
                                     <td>{{ $resource->user->getFullName() }}</td>
                                     <td>
                                         <a href="{{ route('resources.show', $resource) }}"
                                            class="btn btn-sm btn-secondary">{{ __('Details') }}</a>
-                                        @if (\App\Http\Helpers\Helper::isUserHasAccess($resource))
+                                        @if (Helper::isUserHasAccess($resource))
                                             <a href="{{ route('resources.edit', $resource) }}"
                                                class="btn btn-sm btn-warning">{{ __('Edit') }}</a>
                                         @endif

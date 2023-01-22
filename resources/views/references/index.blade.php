@@ -24,6 +24,7 @@
                             <tr>
                                 <th class="col-auto" scope="col">{{ __('Reference name') }}</th>
                                 <th class="col-auto" scope="col">{{ __('Tags') }}</th>
+                                <th class="col-auto" scope="col">{{ __('Created by') }}</th>
                                 <th class="col-auto" scope="col">{{ __('Action') }}</th>
                             </tr>
                             </thead>
@@ -31,11 +32,12 @@
                             @foreach($references as $reference)
                                 <tr>
                                     <td>{{ $reference->reference_name }}</td>
-                                    <td>{{ $reference->getRelatedTagsToString() }}</td>
+                                    <td>{{ Helper::getRelatedTagsToString($reference) }}</td>
+                                    <td>{{ $reference->user->getFullName() }}</td>
                                     <td>
                                         <a href="{{ route('references.show', $reference) }}"
                                            class="btn btn-sm btn-secondary">{{ __('Details') }}</a>
-                                        @if (\App\Http\Helpers\Helper::isUserHasAccess($reference))
+                                        @if (Helper::isUserHasAccess($reference))
                                             <a href="{{ route('references.edit', $reference) }}"
                                                class="btn btn-sm btn-warning">{{ __('Edit') }}</a>
                                         @endif

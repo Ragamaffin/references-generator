@@ -40,10 +40,16 @@
                                 {{ __('Resources') }}
                             </a>
                         </li>
+                        <li class="nav-item px-2">
+                            <a class="nav-link link-dark" href="{{ route('references.index') }}">
+                                <img src="{{ asset('icons/references-icon.png') }}" width="32">
+                                {{ __('References') }}
+                            </a>
+                        </li>
                             <li class="nav-item px-2">
-                                <a class="nav-link link-dark" href="{{ route('references.index') }}">
-                                    <img src="{{ asset('icons/references-icon.png') }}" width="32">
-                                    {{ __('References') }}
+                                <a class="nav-link link-dark" href="{{ route('users.index') }}">
+                                    <img src="{{ asset('icons/users-icon.png') }}" width="32">
+                                    {{ __('Users') }}
                                 </a>
                             </li>
                         @endauth

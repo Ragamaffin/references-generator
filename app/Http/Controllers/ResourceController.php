@@ -8,6 +8,7 @@ use App\Models\Reference;
 use App\Models\Resource;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class ResourceController extends Controller
@@ -35,7 +36,7 @@ class ResourceController extends Controller
         $resource->description = $request->input('description');
         $resource->year = $request->input('year');
         $resource->resource_url = $request->input('resource_url');
-        $resource->created_by = Auth()->user()->user_id;
+        $resource->created_by = Auth::id();
 
         if ($request->hasFile('file_input')) {
             $file = $request->file('file_input');
@@ -50,7 +51,7 @@ class ResourceController extends Controller
 
         $resource->save();
 
-        Helper::setTags($resource, $request);
+        $resource->setTags($request);
 
         return redirect()->route('resources.show', $resource)->with('message', __('Resource successfully created'));
     }
@@ -79,7 +80,7 @@ class ResourceController extends Controller
         $resource->year = $request->input('year');
         $resource->resource_url = $request->input('resource_url');
 
-        Helper::setTags($resource, $request);
+        $resource->setTags($request);
 
         return redirect()->route('resources.show', $resource)->with('message', __('Resource successfully updated'));
     }
@@ -100,6 +101,7 @@ class ResourceController extends Controller
         if ($resourceName) {
             $query->where('resource_name', 'LIKE', "%$resourceName%");
         }
+
         if ($selectedTags) {
             $query->whereHas('tags', function($query) use($selectedTags) {
                 $query->whereIn('tags.tag_id', $selectedTags);

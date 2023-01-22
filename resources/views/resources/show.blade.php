@@ -7,12 +7,12 @@
                 <div class="card">
                     <div class="card-header">
                         {{ __('Resource details') }}
-                        @if (\App\Http\Helpers\Helper::isCreatedByUser($resource) || \App\Http\Helpers\Helper::isAdmin())
+                        @if (Helper::isUserHasAccess($resource))
                             <a href="{{ route('resources.edit', [$resource]) }}"
                                class="btn btn-warning float-end mx-2">{{ __('Edit') }}</a>
+                        @endif
                             <a href="#" class="btn btn-primary float-end" data-bs-toggle="modal"
                                data-bs-target="#ModalAddToReference">{{ __('Add to reference') }}</a>
-                        @endif
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -32,7 +32,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-3"><h6 class="mb-0">{{ __('Tags') }}</h6></div>
-                            <div class="col-9">{{$resource->getRelatedTagsToString() }}</div>
+                            <div class="col-9">{{Helper::getRelatedTagsToString($resource) }}</div>
                         </div>
                         <hr>
                         @if ($resource->resource_url)

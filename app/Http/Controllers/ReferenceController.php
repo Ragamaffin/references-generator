@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Helpers\Helper;
 use App\Http\Requests\Reference\StoreReferenceRequest;
 use App\Models\Reference;
 use App\Models\Resource;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReferenceController extends Controller
 {
@@ -29,11 +29,8 @@ class ReferenceController extends Controller
         $reference = new Reference();
 
         $reference->reference_name = $request->input('reference_name');
-        $reference->created_by = Auth()->user()->user_id;
-
+        $reference->created_by = Auth::id();
         $reference->save();
-
-        Helper::setTags($reference, $request);
 
         return redirect()->route('references.show', $reference)->with('message', __('Reference successfully created. Please fill it using resources.'));
     }
@@ -51,15 +48,15 @@ class ReferenceController extends Controller
         return view('references.edit', compact(['reference', 'tags', 'selectedTags']));
     }
 
-    public function update(Request $request, Reference $reference)
+    public function update(StoreReferenceRequest $request, Reference $reference)
     {
-        //
+        $reference->reference_name = $request->input('reference_name');
+        $reference->save();
+
+        return redirect()->route('references.show', $reference)->with('message', __('Reference successfully changed.'));
     }
 
-    public function destroy(Reference $reference)
-    {
-        //
-    }
+    public function destroy(Reference $reference) {}
 
     public function search(Request $request)
     {
@@ -67,7 +64,7 @@ class ReferenceController extends Controller
         $selectedTags = $request->tags;
         $query = Reference::query();
         if ($referenceName) {
-            $query->where('reference_name', 'LIKE', "$referenceName%");
+            $query->where('reference_name', 'LIKE', "%$referenceName%");
         }
         if ($selectedTags) {
             $query->whereHas('tags', function($query) use($selectedTags) {
@@ -82,7 +79,9 @@ class ReferenceController extends Controller
 
     public function removeResource(Reference $reference, Resource $resource)
     {
+        $reference->removeTags($resource);
         if ($reference->resources()->detach($resource->resource_id)) {
+
             return redirect()->back()->with('message', sprintf(__("Resource %s successfully removed from current reference"), $resource->resource_name));
         }
 
@@ -96,10 +95,26 @@ class ReferenceController extends Controller
 
         if (!$relatedResource) {
             $reference->resources()->attach($resource->resource_id);
+            $reference->setTags($resource);
 
             return redirect()->back()->with('message', sprintf(__("Resource %s successfully attached to reference %s"), $resource->resource_name, $reference->reference_name));
         }
 
         return redirect()->back()->with('error', sprintf(__("Resource %s already attached to reference %s"), $resource->resource_name, $reference->reference_name));
+    }
+
+    public function toggleStatus(Reference $reference)
+    {
+        $statuses = Reference::getStatusList();
+        unset($statuses[$reference->status]);
+        $reference->status = array_key_first($statuses);
+        $reference->save();
+
+        return redirect()->back()->with('message', sprintf(__("Reference status is changed"), $reference->reference_name));
+    }
+
+    public function generate(Reference $reference)
+    {
+
     }
 }

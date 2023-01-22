@@ -7,6 +7,14 @@
                 <div class="card">
                     <div class="card-header">
                         {{ __('Reference details') }}
+                        <a href="{{ route('references.generate', [$reference]) }}"
+                           class="btn btn-primary float-end mx-2">{{ __('Generate reference') }}</a>
+                        @if (Helper::isUserHasAccess($reference))
+                            <a href="{{ route('references.edit', [$reference]) }}"
+                               class="btn btn-warning float-end mx-2">{{ __('Edit') }}</a>
+                            <a href="{{ route('references.toggleStatus', [$reference]) }}"
+                               class="btn {{ $reference->getStatusColor() }} float-end mx-2">{{ $reference->getStatus() }}</a>
+                        @endif
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -16,7 +24,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-3"><h6 class="mb-0">{{ __('Tags') }}</h6></div>
-                            <div class="col-9">{{ $reference->getRelatedTagsToString() }}</div>
+                            <div class="col-9">{{ Helper::getRelatedTagsToString($reference) }}</div>
                         </div>
                         <hr>
                         <table class="table table-striped">

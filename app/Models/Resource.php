@@ -57,16 +57,14 @@ class Resource extends Model
         return false;
     }
 
-    public function getRelatedTagsToString($type = Helper::TAGS_STRING)
+    public function setTags($request)
     {
-        $tags = [];
+        $this->tags()->detach();
 
-        foreach ($this->tags as $tag) {
-            $tags[] = $tag->tag_name;
+        if ($request->tags) {
+            foreach ($request->tags as $tag) {
+                $this->tags()->attach($tag);
+            }
         }
-
-        return $type === Helper::TAGS_STRING
-            ? implode(', ', $tags)
-            : $tags;
     }
 }

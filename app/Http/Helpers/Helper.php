@@ -3,26 +3,13 @@
 namespace App\Http\Helpers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class Helper
 {
-    public const TAGS_STRING = 'string';
-    public const TAGS_ARRAY = 'array';
-
-    public static function setTags($model, $request)
-    {
-        $model->tags()->detach();
-
-        if ($request->tags) {
-            foreach ($request->tags as $tag) {
-                $model->tags()->attach($tag);
-            }
-        }
-    }
-
     public static function isCreatedByUser($model)
     {
-        if ($model->created_by === Auth()->user()->user_id) {
+        if ($model->created_by === Auth::id()) {
             return true;
         }
 
@@ -31,7 +18,7 @@ class Helper
 
     public static function isAdmin()
     {
-        if (Auth()->user()->role === User::ROLE_ADMIN) {
+        if (Auth::user()->role === User::ROLE_ADMIN) {
             return true;
         }
 
@@ -45,5 +32,16 @@ class Helper
         }
 
         return false;
+    }
+
+    public static function getRelatedTagsToString($model)
+    {
+        $tags = [];
+
+        foreach ($model->tags as $tag) {
+            $tags[] = $tag->tag_name;
+        }
+
+        return implode(', ', $tags);
     }
 }
