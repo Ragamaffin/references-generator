@@ -61,7 +61,7 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item mx-2">
-                                    <a class="btn btn-primary" href="{{ route('login') }}">{{ __('Auth') }}</a>
+                                    <a class="btn btn-primary" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
 

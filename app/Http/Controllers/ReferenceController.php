@@ -53,7 +53,7 @@ class ReferenceController extends Controller
         $reference->reference_name = $request->input('reference_name');
         $reference->save();
 
-        return redirect()->route('references.show', $reference)->with('message', __('Reference successfully changed.'));
+        return redirect()->route('references.show', $reference)->with('message', __('Reference successfully changed'));
     }
 
     public function destroy(Reference $reference) {}
@@ -74,7 +74,7 @@ class ReferenceController extends Controller
         $references = $query->orderBy('reference_name')->paginate(10);
         $tags = Tag::all();
 
-        return view('references.index', compact(['references', 'tags', 'selectedTags']));
+        return view('references.index', compact(['references', 'tags', 'selectedTags']))->with('search_name', $referenceName);
     }
 
     public function removeResource(Reference $reference, Resource $resource)

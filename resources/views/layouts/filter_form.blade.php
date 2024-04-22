@@ -1,6 +1,6 @@
 <label for="search_by_name" class="col-auto">{{ __('Search by name') }}</label>
 <div class="col mb-2">
-    <input type="text" class="form-control" id="search_name" name="search_name">
+    <input type="text" class="form-control" id="search_name" name="search_name" value="{{ $search_name ?? '' }}">
 </div>
 
 <label for="search_by_tags" class="col-auto">{{ __('Search by tags') }}</label>

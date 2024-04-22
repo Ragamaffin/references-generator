@@ -44,7 +44,7 @@ class ResourceController extends Controller
             $fileNameData = pathinfo($fileName);
 
             $randomName = $fileNameData['filename'].'-'.now()->timestamp.'.'.$fileNameData['extension'];
-            File::put(public_path('uploads/resources/'.$randomName), $file->getContent());
+            File::put(public_path('uploads\\resources\\'.$randomName), $file->getContent());
 
             $resource->file_path = $randomName;
         }
@@ -111,6 +111,6 @@ class ResourceController extends Controller
         $resources = $query->orderBy('resource_name')->paginate(10);
         $tags = Tag::all();
 
-        return view('resources.index', compact(['resources', 'tags', 'selectedTags']));
+        return view('resources.index', compact(['resources', 'tags', 'selectedTags']))->with('search_name', $resourceName ?? '');
     }
 }

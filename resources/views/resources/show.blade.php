@@ -22,7 +22,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-3"><h6 class="mb-0">{{ __('Resource type') }}</h6></div>
-                            <div class="col-9">{{ $resource->resource_type }}</div>
+                            <div class="col-9">{{ $resource->getTypeName() }}</div>
                         </div>
                         <hr>
                         <div class="row">
